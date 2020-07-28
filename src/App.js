@@ -1,26 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
 
-function App() {
+const state = [
+  {
+    id: 1,
+    name: 'init Later',
+    status: 'done',
+  },
+  {
+    id: 2,
+    name: 'Appearence',
+    status: 'done',
+  },
+  {
+    id: 3,
+    name: 'State',
+    status: 'now',
+  },
+  {
+    id: 4,
+    name: 'Click to change status',
+    status: 'today',
+  },
+]
+
+const Title = ({ children }) => <h2 className="title">{children}</h2>
+
+const Row = ({ children }) => (
+  <div className="row">
+    <div className="box" />
+    {children}
+  </div>
+)
+
+const Column = ({ children, style = {} }) => (
+  <div className="column" style={style}>
+    {children}
+  </div>
+)
+
+export default () => {
+  const today = state.filter((i) => i.status === 'today')
+  const now = state.filter((i) => i.status === 'now')
+  const done = state.filter((i) => i.status === 'done')
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div className="container">
+      <Column style={{ borderLeft: 'none' }}></Column>
+      <Column>
+        <Title>Today</Title>
+        {today.map((i) => (
+          <Row key={i.id}>{i.name}</Row>
+        ))}
+      </Column>
+      <Column>
+        <Title>Now</Title>
 
-export default App;
+        {now.map((i) => (
+          <Row key={i.id}>{i.name}</Row>
+        ))}
+      </Column>
+      <Column>
+        <Title>Done</Title>
+
+        {done.map((i) => (
+          <Row key={i.id}>{i.name}</Row>
+        ))}
+      </Column>
+    </div>
+  )
+}
