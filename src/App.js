@@ -25,15 +25,15 @@ const state = [
 
 const Title = ({ children }) => <h2 className="title">{children}</h2>
 
-const Row = ({ children }) => (
+const Row = ({ children, done = false }) => (
   <div className="row">
-    <div className="box" />
+    <div className={`box ${done ? 'done' : ''}`} />
     {children}
   </div>
 )
 
-const Column = ({ children, style = {} }) => (
-  <div className="column" style={style}>
+const Column = ({ children, style = {}, done = false }) => (
+  <div className={`column ${done ? 'done' : ''}`} style={style}>
     {children}
   </div>
 )
@@ -46,26 +46,29 @@ export default () => {
   return (
     <div className="container">
       <Column style={{ borderLeft: 'none' }}></Column>
-      <Column>
+      <Column today>
         <Title>Today</Title>
         {today.map((i) => (
           <Row key={i.id}>{i.name}</Row>
         ))}
       </Column>
-      <Column>
+      <Column now>
         <Title>Now</Title>
 
         {now.map((i) => (
           <Row key={i.id}>{i.name}</Row>
         ))}
       </Column>
-      <Column>
+      <Column done>
         <Title>Done</Title>
 
         {done.map((i) => (
-          <Row key={i.id}>{i.name}</Row>
+          <Row key={i.id} done>
+            {i.name}
+          </Row>
         ))}
       </Column>
+      <Column />
     </div>
   )
 }
