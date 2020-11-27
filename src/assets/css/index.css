@@ -6,6 +6,7 @@ body {
   display: grid;
   grid-template-columns: 10% 25% 35% 20% 10%;
   background: #fdfdfd;
+  display: flex;
 }
 .column {
   display: flex;
@@ -69,5 +70,9 @@ h2 {
   color: #b1b1b1;
 }
 * {
-  font-family: 'Rokkitt', serif;
+  font-family: system-ui;
+}
+
+.column.next {
+  width: 300px;
 }
