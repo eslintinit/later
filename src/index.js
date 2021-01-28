@@ -8,11 +8,11 @@ import TasksProvider from 'context/tasks'
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppProvider>
-      <TasksProvider>
+    <TasksProvider>
+      <AppProvider>
         <App />
-      </TasksProvider>
-    </AppProvider>
+      </AppProvider>
+    </TasksProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

@@ -1,34 +1,82 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useContext } from 'react'
+import { tasksContext } from 'context'
 import { useKeyboardShortcut } from 'hooks'
 
 const appContext = createContext()
+
+const hash = {
+  0: 'later',
+  1: 'next',
+  2: 'now',
+  3: 'done',
+}
 
 const AppProvider = ({ children }) => {
   // 0 - later
   // 1 - next
   // 2 - now
-  // 3 - done
-  // 4 - bin
+  // 3 - done / archieve
   const [boardIndex, setBoardIndex] = useState(1)
   const [cardIndex, setCardIndex] = useState(0)
+  const { tasks } = useContext(tasksContext)
 
   useKeyboardShortcut({
     ArrowRight: () => {
-      setBoardIndex((old) => (old === 4 ? old : old + 1))
-      setCardIndex(0)
+      // if there no tasks in now - skip it
+      if (boardIndex === 1) {
+        if (tasks.filter((i) => i.status === 'now').length === 0) {
+          setBoardIndex(3)
+          setCardIndex(0)
+        }
+      } else {
+        if (boardIndex !== 3) {
+          setBoardIndex((old) => (old === 3 ? old : old + 1))
+          setCardIndex(0)
+        }
+      }
     },
     ArrowLeft: () => {
-      setBoardIndex((old) => (old === 0 ? old : old - 1))
-      setCardIndex(0)
+      // if there no tasks in now - skip it
+      if (boardIndex === 3) {
+        if (tasks.filter((i) => i.status === 'now').length === 0) {
+          setBoardIndex(1)
+          setCardIndex(0)
+        }
+      } else {
+        if (boardIndex !== 0) {
+          setBoardIndex((old) => (old === 0 ? old : old - 1))
+          setCardIndex(0)
+        }
+      }
     },
-    ArrowUp: () => setCardIndex((old) => old - 1),
-    ArrowDown: () => setCardIndex((old) => old + 1),
+    ArrowUp: () =>
+      setCardIndex((old) =>
+        old === 0
+          ? tasks.filter((i) => i.status === hash[boardIndex]).length - 1
+          : old - 1,
+      ),
+    ArrowDown: () =>
+      setCardIndex((old) =>
+        old === tasks.filter((i) => i.status === hash[boardIndex]).length - 1
+          ? 0
+          : old + 1,
+      ),
+    Enter: () => {
+      // Move task to next column
+      alert(
+        tasks.filter((i) => i.status === hash[boardIndex])[cardIndex].name +
+          ' [Move next]',
+      )
+    },
+    Escape: () => {
+      // Move task to previous column
+      alert(
+        tasks.filter((i) => i.status === hash[boardIndex])[cardIndex].name +
+          ' [Move back]',
+      )
+    },
   })
 
-  console.log('cardIndex')
-  console.log(cardIndex)
-  console.log('boardIndex')
-  console.log(boardIndex)
   return (
     <appContext.Provider
       value={{

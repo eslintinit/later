@@ -1,21 +1,21 @@
 import { useState, createContext } from 'react'
 import initTasks from './data/tasks'
 
-const TasksContext = createContext()
+const tasksContext = createContext()
 
 const TasksProvider = ({ children }) => {
   const [tasks, setTasks] = useState(initTasks)
 
   return (
-    <TasksContext.Provider
+    <tasksContext.Provider
       value={{
         tasks,
         setTasks,
       }}
     >
       {children}
-    </TasksContext.Provider>
+    </tasksContext.Provider>
   )
 }
 
-export { TasksProvider as default, TasksContext }
+export { TasksProvider as default, tasksContext }

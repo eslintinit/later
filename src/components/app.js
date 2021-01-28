@@ -1,31 +1,29 @@
 import { useContext } from 'react'
-import { appContext } from 'context'
+import { appContext, tasksContext } from 'context'
 
-import LaterBin from './later-bin'
-import NextDone from './next-done'
+import Later from './later'
+import Next from './next'
 import Now from './now'
+import Done from './done'
 
 const App = () => {
   const { boardIndex } = useContext(appContext)
+  const { tasks } = useContext(tasksContext)
 
   if (boardIndex === 0) {
-    return <LaterBin later />
+    return <Later tasks={tasks.filter((i) => i.status === 'later')} />
   }
 
   if (boardIndex === 1) {
-    return <NextDone next />
+    return <Next tasks={tasks.filter((i) => i.status === 'next')} />
   }
 
   if (boardIndex === 2) {
-    return <Now />
+    return <Now tasks={tasks.filter((i) => i.status === 'now')} />
   }
 
   if (boardIndex === 3) {
-    return <NextDone done />
-  }
-
-  if (boardIndex === 4) {
-    return <LaterBin bin />
+    return <Done tasks={tasks.filter((i) => i.status === 'done')} />
   }
 
   return <div />
